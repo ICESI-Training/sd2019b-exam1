@@ -1,6 +1,4 @@
 base:
-  '*':
-    - common
   'webServer*':
     - webservertools
   'dataBase*':

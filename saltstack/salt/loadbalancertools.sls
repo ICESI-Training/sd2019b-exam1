@@ -1,6 +1,6 @@
-Install apache and make sure the apache service is running, and start in the boot:
+install_apache:
   pkg.installed:
-    - name: apache
+    - name: httpd
   service.running:
-    - name: apache
+    - name: httpd
     - enable: True

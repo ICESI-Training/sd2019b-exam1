@@ -1,7 +1,18 @@
-Install mysql and make sure the mysql service is running, and start in the boot:
+install_postgresql:
   pkg.installed:
-    - name: mysql
+    - name: postgresql-server
+    - name: postgresql-contrib
+pgsql-data-dir:
+  postgres_initdb.present:
+    - name: /var/lib/pgsql/data
+    - auth: password
+    - user: postgres
+    - password: strong_password
+    - encoding: UTF8
+    - locale: C
+    - runas: postgres
+check_db_start:
   service.running:
-    - name: mysql
+    - name: postgresql
     - enable: True
     
