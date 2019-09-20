@@ -1,0 +1,8 @@
+publish_port: 4505
+ret_port: 4506
+pki_dir: /etc/salt/keys
+open_mode: True
+file_roots:
+  base:
+    - /srv/salt/
+ 
