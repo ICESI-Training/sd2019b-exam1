@@ -35,9 +35,16 @@ Para ver que todo se genero correstamente y que el master puede alcanzar a los m
 ~~~
   salt '*' test.ping
 ~~~
-Al entrar en la master deben ejecutar los siguientes comandos para instalar todas las dependencias:
+Al entrar en la master deben ejecutar los siguientes comandos para instalar todas las dependencias relacionadas con el Load Balancer e instalar apache en los servidores web:
 ~~~
   sudo su
-  salt '*' state.apply
+  salt-run state.orch apache_orchestration
 ~~~
-Si en la terminal todo les sale corresto, quiere decir que ya todo quedó bien instalado. :)
+Para obtener la dirección ip del Load Balancer ejecutan:
+~~~
+  salt loadbalancer network.ipaddrs eth1
+~~~
+Luego ingresan esa dirección a su navegador, recargan para ver la diferencia entre los servidores.
+
+
+Si en la terminal todo les sale correcto, quiere decir que ya todo quedó bien instalado. :)
