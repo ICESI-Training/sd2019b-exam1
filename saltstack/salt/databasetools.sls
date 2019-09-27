@@ -1,18 +1,17 @@
-install_postgresql:
+postgresql:
   pkg.installed:
     - name: postgresql-server
-    - name: postgresql-contrib
 
-pgsql-data-dir:
-  postgres_initdb.present:
-    - name: /var/lib/pgsql/data
-    - auth: password
-    - user: postgres
-    - password: strong_password
-    - encoding: UTF8
-    - locale: C
-    - runas: postgres
-    
+run-init-postgresql:
+  cmd.run:
+    - cwd: /
+    - user: root
+    - names:
+      - postgresql-setup initdb
+    - unless: stat /var/lib/pgsql/9.1/data/postgresql.conf
+    - require:
+      - pkg: postgresql-server
+
 check_db_start:
   service.running:
     - name: postgresql
