@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define :master, primary: true do |master_config|
     master_config.vm.provider "virtualbox" do |vb|
-        vb.memory = "2048"
+        vb.memory = "512"
         vb.cpus = 1
         vb.name = "master"
     end
@@ -28,8 +28,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.minion_key = "saltstack/keys/master_minion.pem"
       salt.minion_pub = "saltstack/keys/master_minion.pub"
       salt.seed_master = {
-                          "minion1" => "saltstack/keys/minion1.pub",
-                          "minion2" => "saltstack/keys/minion2.pub"
+                          "minionws1" => "saltstack/keys/minionws1.pub",
+                          "minionws2" => "saltstack/keys/minionws2.pub",
+                          "miniondb" => "saltstack/keys/miniondb.pub"
                          }
 
       salt.install_type = "stable"
@@ -43,8 +44,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 
   [
-    ["minion1",    "#{net_ip}.11",    "1024",    os ],
-    ["minion2",    "#{net_ip}.12",    "1024",    os ],
+    ["minionws1",    "#{net_ip}.110",    "512",    os ],
+    ["minionws2",    "#{net_ip}.120",    "512",    os ],
+    ["miniondb",    "#{net_ip}.130",    "512",    os ],
+    
   ].each do |vmname,ip,mem,os|
     config.vm.define "#{vmname}" do |minion_config|
       minion_config.vm.provider "virtualbox" do |vb|
