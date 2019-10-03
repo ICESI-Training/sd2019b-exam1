@@ -1,1 +1,0 @@
-sudo -u postgres -i -H sh -c "psql -c '\h'"

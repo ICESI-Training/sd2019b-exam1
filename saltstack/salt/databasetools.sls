@@ -22,7 +22,27 @@ connection_config:
     - name: /etc/salt/minion
     - source: salt://database/connection_config
 
-create_user:
+update_postgres_config1:
+  file.append:
+    - name: /var/lib/pgsql/data/postgresql.conf
+    - text: listen_addresses = '192.168.50.*'
+
+update_postgres_config2:
+  file.append:
+    - name: /var/lib/pgsql/data/pg_hba.conf
+    - text: host    all    all    0.0.0.0/0    md5
+
+update_postgres_config3:
+  file.append:
+    - name: /var/lib/pgsql/data/pg_hba.conf
+    - text: host    all    all    ::/0    md5
+
+create_db:
   cmd.script:
-    - name: create_user.sh
-    - source: salt://database/create_user.sh
+    - name: create_db.sh
+    - source: salt://database/create_db.sh
+
+create_table:
+  cmd.script:
+    - name: create_table.sh
+    - source: salt://database/create_table.sh
