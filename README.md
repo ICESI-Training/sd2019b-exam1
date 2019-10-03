@@ -1,7 +1,7 @@
 ### Equipo de trabajo:
-* Johnatan Garzón
-* Cristian Alejandro Morales
-* Juan Esteban Quinayás
+* Johnatan Garzón - A00333960
+* Cristian Alejandro Morales - A00328064
+* Juan Esteban Quinayás - A00027548
 
 ---
 
