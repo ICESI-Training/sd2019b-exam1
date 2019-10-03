@@ -12,11 +12,6 @@ run-init-postgresql:
     - require:
       - pkg: postgresql-server
 
-check_db_start:
-  service.running:
-    - name: postgresql
-    - enable: True
-
 connection_config:
   file.managed:
     - name: /etc/salt/minion
@@ -25,7 +20,7 @@ connection_config:
 update_postgres_config1:
   file.append:
     - name: /var/lib/pgsql/data/postgresql.conf
-    - text: listen_addresses = '192.168.50.*'
+    - text: listen_addresses = '*'
 
 update_postgres_config2:
   file.append:
@@ -46,3 +41,8 @@ create_table:
   cmd.script:
     - name: create_table.sh
     - source: salt://database/create_table.sh
+
+check_db_start:
+  service.running:
+    - name: postgresql
+    - enable: True
