@@ -1,0 +1,8 @@
+master: 192.168.50.10
+master_port: 4506
+pki_dir: /etc/salt/keys
+postgres.host: 'localhost'
+postgres.port: '5432'
+postgres.user: 'root' -> db user
+postgres.pass: ''
+postgres.maintenance_db: 'postgres'

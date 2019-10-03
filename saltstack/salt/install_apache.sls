@@ -7,7 +7,7 @@ install_apache:
     
 Deploy a simple web page:
   file.managed:
-    - name: /usr/share/httpd/noindex/index.html
+    - name: /var/www/html/index.html
     - contents: |
         <!doctype html>
         <html lang="en">
