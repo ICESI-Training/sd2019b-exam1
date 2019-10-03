@@ -5,7 +5,7 @@ postgresql:
 run-init-postgresql:
   cmd.run:
     - cwd: /
-    - user: root 
+    - user: root
     - names:
       - postgresql-setup initdb
     - unless: stat /var/lib/pgsql/9.1/data/postgresql.conf
