@@ -4,6 +4,21 @@ install_apache:
   service.running:
     - name: httpd
     - enable: True
+
+node_js:
+  pkg.installed:
+    - name: nodejs
+
+
+npm:
+  pkg.installed:
+    - name: npm
+
+yaml:
+  npm.installed:
+    - require:
+      - pkg: npm
+
     
 Deploy a simple web page:
   file.managed:
@@ -43,6 +58,8 @@ Deploy a simple web page:
         </div>
         </body>
         </html>
+
+
 
 Restart service if configuration changes:
   service.running:
