@@ -8,7 +8,7 @@ apache2:
 /var/www/html/index.html:
   file.managed:
     - template: jinja
-    - source: salt://web/conf/index.html
+    - source: salt://web2/conf/index.html
 #/var/www/html/index.json:
 #  file.managed:
 #    - template: jinja

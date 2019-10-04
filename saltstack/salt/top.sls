@@ -1,7 +1,9 @@
 base:
   '*':
     - common
-  'minionws*':
-    - web
+  'minionws1':
+    - web1
+  'minionws2':
+    - web2
   'master':
     - balancer
