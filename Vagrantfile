@@ -30,7 +30,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.seed_master = {
                           "minionws1" => "saltstack/keys/minionws1.pub",
                           "minionws2" => "saltstack/keys/minionws2.pub",
-                          "miniondb" => "saltstack/keys/miniondb.pub"
+                          "miniondb" => "saltstack/keys/miniondb.pub",
+                          "minionlb" => "saltstack/keys/minionlb.pub"
                          }
 
       salt.install_type = "stable"
@@ -47,6 +48,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ["minionws1",    "#{net_ip}.110",    "512",    os ],
     ["minionws2",    "#{net_ip}.120",    "512",    os ],
     ["miniondb",    "#{net_ip}.130",    "512",    os ],
+    ["minionlb",    "#{net_ip}.140",    "512",    os ]
     
   ].each do |vmname,ip,mem,os|
     config.vm.define "#{vmname}" do |minion_config|
