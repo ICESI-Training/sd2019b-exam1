@@ -9,7 +9,6 @@ node_js:
   pkg.installed:
     - name: nodejs
 
-
 npm:
   pkg.installed:
     - name: npm
@@ -19,6 +18,22 @@ yaml:
     - require:
       - pkg: npm
 
+install_python:
+  cmd.script:
+    - name: python.sh
+    - source: salt://python/python.sh
+
+upgrade pip:
+  cmd.run:
+    - name: pip install --upgrade pip
+
+epel_release:
+  pkg.installed:
+    - name: epel-release
+
+install flask:
+  cmd.run:
+    - name: pip install flask
     
 Deploy a simple web page:
   file.managed:
