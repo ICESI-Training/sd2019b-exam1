@@ -1,0 +1,25 @@
+yum install repo:
+  pkg.install:
+    - name: https://centos7.iuscommunity.org/ius-release.rpm
+
+yum update:
+  pkg.update
+
+yum install python:
+  pkg.install:
+    - name: python36u
+    - name: python36u-libs
+    - name: python36u-devel
+    - name: python36u-pip
+
+install epel_release:
+  pkg.install:
+    - name: epel-release
+
+install flask:
+  cmd.run:
+    - name: python3.6 -m pip install flask
+
+yum version:
+  pkg.version:
+    - name: python3.6

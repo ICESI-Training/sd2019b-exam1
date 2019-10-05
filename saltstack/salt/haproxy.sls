@@ -21,7 +21,11 @@ Configure haproxy:
             timeout connect  5000
             timeout client  10000
             timeout server  10000
-        listen appname 0.0.0.0:80
+        frontend local
+            bind *:80
+            mode http
+            default_backend servers
+        backend servers
             mode http
             stats enable
             stats uri /haproxy?stats
@@ -31,7 +35,7 @@ Configure haproxy:
             option httpclose
             option forwardfor
             {% for server, addr in salt['mine.get']('web*', 'network.ip_addrs').items() %}
-            server {{ server }} {{ addr[0] }}:80 check
+            server {{ server }} {{ addr[0] }}:5555 check
             {%- endfor %}
 
 Start haproxy service:

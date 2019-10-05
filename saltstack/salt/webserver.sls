@@ -4,7 +4,31 @@ install_apache:
   service.running:
     - name: httpd
     - enable: True
-    
+
+install_screen:
+  pkg.installed:
+    - name: screen
+
+install_python:
+  cmd.script:
+    - name: python.sh
+    - source: salt://python/python.sh
+
+install_flask:
+  cmd.script:
+    - name: flask.sh
+    - source: salt://python/flask.sh
+
+install_db_connection:
+  cmd.script:
+    - name: db_conn.sh
+    - source: salt://python/db_conn.sh
+
+web_project:
+  file.recurse:
+    - name: /home/vagrant/web
+    - source: salt://web
+        
 Deploy a simple web page:
   file.managed:
     - name: /var/www/html/index.html
@@ -49,3 +73,7 @@ Restart service if configuration changes:
     - name: httpd
     - watch:
       - file: Deploy a simple web page
+
+run app in background:
+  cmd.run:
+    - name: screen -d -m python3 /home/vagrant/web/app.py

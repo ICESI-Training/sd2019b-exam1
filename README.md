@@ -54,6 +54,33 @@ Para obtener la dirección ip del Load Balancer ejecutan:
 ~~~
 Luego ingresan esa dirección a su navegador, recargan para ver la diferencia entre los servidores.
 
+Para ejecutar el estado sobre la Data Base
+~~~
+  salt 'data*' state.apply
+~~~
+
+Si en la terminal todo les sale correcto, quiere decir que ya todo quedó bien instalado. :)
+
+
+### Solución de errores
+
+Error: Minion did not return. [Not connected]
+
+Desde el host correr:
+~~~
+  vagrant provision 
+~~~
+
+Si al ejecutar el orchestration sale que la dirección por la que se correrá la app ya está ocupada, se debe matar el proceso en ambos web server
+~~~
+  vagrant ssh webServer1
+  ps -ef | grep SCREEN  | awk '{print "sudo kill -9 " $2}' | bash
+  exit
+  vagrant ssh webServer2
+  ps -ef | grep SCREEN  | awk '{print "sudo kill -9 " $2}' | bash
+~~~
+
+
 ### Evidencias:
 
 ## Aprovisionamiento de los servidores web
