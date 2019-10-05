@@ -1,5 +1,5 @@
 # Examen 1 - Sistemas Distribuidos
-## Integrantes:
+## Integrantes
 - Jesús Paz - A00022240
 - Felipe Cortez - A00077528
 - Juan David Bolaños - A00077464
@@ -54,7 +54,7 @@ Para obtener la dirección ip del Load Balancer ejecutan:
 ~~~
 Luego ingresan esa dirección a su navegador, recargan para ver la diferencia entre los servidores.
 
-### Evidencias
+### Evidencias:
 
 ## Aprovisionamiento de los servidores web
 
@@ -66,7 +66,7 @@ Para el aprovisionamiento de los servidores web se instaló apache, lo que nos p
 ### Procedimiento:
 
 
-### Evidencias
+### Evidencias:
 
 
 ## Aprovisionamiento de la base de datos
@@ -78,16 +78,23 @@ Para el aprovisionamiento de la base de datos, se creó un state que permite ins
 ### Procedimiento:
 
 
-### Evidencias
+### Evidencias:
 
 
 ## Tareas de integración
 
 
 ### Descripción:
+El trabajo se distributo de la siguiente manera:
+  * Creacion y despliegue de la ingraestructura.
+  * Creacion de el balanceador de carga.
+  * Creacion del servidor web.
+  * Creacion de la base de datos.
+  * Integracion del servidor web con la base de datos.
+  
+Por lo tanto, la tarea de integracion en este caso fue la conexion del web server con la base de datos. Debido a que los anteriores puntos ya fueron descritos anteriormente en este documento.
 
-
-### Evidencias
+### Evidencias:
 
 
 ## Problemas encontrados
@@ -96,6 +103,6 @@ Para el aprovisionamiento de la base de datos, se creó un state que permite ins
  
   * En algunos momentos para realizar el aprovisionamiento, era difícil hacer un state de saltstack, ya que en muchas ocasiones teníamos bastantes errores y las cosas no funcionaban como queríamos.
 
-
+  * En el momento de replicar la infraestructura en otra maquina diferente a la que se creo, se generaron multiples problemas, lo que retrazo en gran parte la iniciacion de la creacion del web server.
 
 
