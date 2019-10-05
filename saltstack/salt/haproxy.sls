@@ -31,7 +31,7 @@ Configure haproxy:
             option httpclose
             option forwardfor
             {% for server, addr in salt['mine.get']('web*', 'network.ip_addrs').items() %}
-            server {{ server }} {{ addr[0] }}:80 check
+            server {{ server }} {{ addr[0] }}:5555 check
             {%- endfor %}
 
 Start haproxy service:

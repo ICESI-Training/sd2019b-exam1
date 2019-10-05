@@ -5,6 +5,10 @@ install_apache:
     - name: httpd
     - enable: True
 
+install_screen:
+  pkg.installed:
+    - name: screen
+
 install_python:
   cmd.script:
     - name: python.sh
@@ -15,15 +19,15 @@ install_flask:
     - name: flask.sh
     - source: salt://python/flask.sh
 
+install_db_connection:
+  cmd.script:
+    - name: db_conn.sh
+    - source: salt://python/db_conn.sh
+
 web_project:
   file.recurse:
     - name: /home/vagrant/web
     - source: salt://web
-
-#Si se corre este webserver lo demás no se corre, SOLUCIONAR
-#run app:
-#  cmd.run:
-#    - name: python3 /home/vagrant/web/app.py
         
 Deploy a simple web page:
   file.managed:
@@ -64,10 +68,12 @@ Deploy a simple web page:
         </body>
         </html>
 
-
-
 Restart service if configuration changes:
   service.running:
     - name: httpd
     - watch:
       - file: Deploy a simple web page
+
+#run app in background:
+#  cmd.run:
+#    - name: screen -d -m python3 /home/vagrant/web/app.py

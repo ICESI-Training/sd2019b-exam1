@@ -1,5 +1,5 @@
 base:
   'dataBase*':
     - databasetools
-#  'web*':
-#    - webserver
+  'web*':
+    - webserver
