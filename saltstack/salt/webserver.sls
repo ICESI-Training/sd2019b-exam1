@@ -5,36 +5,26 @@ install_apache:
     - name: httpd
     - enable: True
 
-node_js:
-  pkg.installed:
-    - name: nodejs
-
-npm:
-  pkg.installed:
-    - name: npm
-
-yaml:
-  npm.installed:
-    - require:
-      - pkg: npm
-
 install_python:
   cmd.script:
     - name: python.sh
     - source: salt://python/python.sh
 
-upgrade pip:
-  cmd.run:
-    - name: pip install --upgrade pip
+install_flask:
+  cmd.script:
+    - name: flask.sh
+    - source: salt://python/flask.sh
 
-epel_release:
-  pkg.installed:
-    - name: epel-release
+web_project:
+  file.recurse:
+    - name: /home/vagrant/web
+    - source: salt://web
 
-install flask:
-  cmd.run:
-    - name: pip install flask
-    
+#Si se corre este webserver lo demás no se corre, SOLUCIONAR
+#run app:
+#  cmd.run:
+#    - name: python3 /home/vagrant/web/app.py
+        
 Deploy a simple web page:
   file.managed:
     - name: /var/www/html/index.html

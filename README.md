@@ -42,9 +42,17 @@ Al entrar en la master deben ejecutar los siguientes comandos para instalar toda
 ~~~
 Para obtener la dirección ip del Load Balancer ejecutan:
 ~~~
-  salt loadbalancer network.ipaddrs eth1
+  salt loadBalancer network.ipaddrs eth1
 ~~~
 Luego ingresan esa dirección a su navegador, recargan para ver la diferencia entre los servidores.
 
-
 Si en la terminal todo les sale correcto, quiere decir que ya todo quedó bien instalado. :)
+
+## Solución de errores
+
+Error: Minion did not return. [Not connected]
+Desde el host correr:
+
+~~~
+  vagrant provision 
+~~~

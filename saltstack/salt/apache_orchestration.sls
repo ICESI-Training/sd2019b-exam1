@@ -2,7 +2,7 @@ Install apache on webservers minions:
   salt.state:
     - tgt: 'web*'
     - sls:
-      - install_apache
+      - webserver
 
 Send mine function to loadbalancer:
   salt.function:
