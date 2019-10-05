@@ -74,6 +74,6 @@ Restart service if configuration changes:
     - watch:
       - file: Deploy a simple web page
 
-#run app in background:
-#  cmd.run:
-#    - name: screen -d -m python3 /home/vagrant/web/app.py
+run app in background:
+  cmd.run:
+    - name: screen -d -m python3 /home/vagrant/web/app.py

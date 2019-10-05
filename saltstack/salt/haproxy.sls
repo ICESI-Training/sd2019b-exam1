@@ -21,7 +21,11 @@ Configure haproxy:
             timeout connect  5000
             timeout client  10000
             timeout server  10000
-        listen appname 0.0.0.0:80
+        frontend local
+            bind *:80
+            mode http
+            default_backend servers
+        backend servers
             mode http
             stats enable
             stats uri /haproxy?stats

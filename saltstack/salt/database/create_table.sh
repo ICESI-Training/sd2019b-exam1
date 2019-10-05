@@ -7,4 +7,3 @@ CREATE TABLE minions (
 sudo -u postgres -i -H sh -c "psql -c '\dt'";
 
 sudo -u postgres -i -H sh -c "psql -c 'ALTER USER postgres PASSWORD '\'postgres\'';'";
-

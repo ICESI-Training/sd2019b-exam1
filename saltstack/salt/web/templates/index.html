@@ -18,7 +18,16 @@
 
 <body>
 
-    <h1>{{ holi }}</h1>
+    <script>
+        var minions = '{{ minions }}';
+        var text = "";
+        var i;
+        for (i = 0; i < minions.length; i++) {
+          text += minions[i][0] + " - " + minions[i][1] + " - " + minions[i][2] + " - " + "<br>";
+        }
+        console.log(text);
+        document.getElementById("exampleInputCedula").innerHTML = text;
+        </script>
 
     <div id="container">
 
