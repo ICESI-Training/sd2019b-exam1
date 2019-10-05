@@ -85,14 +85,14 @@ Para el aprovisionamiento de la base de datos, se creó un state que permite ins
 
 
 ### Descripción:
-El trabajo se distributo de la siguiente manera:
-  * Creacion y despliegue de la ingraestructura.
-  * Creacion de el balanceador de carga.
-  * Creacion del servidor web.
-  * Creacion de la base de datos.
-  * Integracion del servidor web con la base de datos.
-  
-Por lo tanto, la tarea de integracion en este caso fue la conexion del web server con la base de datos. Debido a que los anteriores puntos ya fueron descritos anteriormente en este documento.
+El trabajo se distribuyó de la siguiente manera:
+  * Creación y despliegue de la infraestructura.
+  * Creación de el balanceador de carga.
+  * Creación del servidor web.
+  * Creación de la base de datos.
+  * Integración del servidor web con la base de datos.
+ 
+Por lo tanto, la tarea de integración en este caso fue la conexión del web server con la base de datos. Debido a que los anteriores puntos ya fueron descritos anteriormente en este documento.
 
 ### Evidencias:
 
@@ -103,6 +103,4 @@ Por lo tanto, la tarea de integracion en este caso fue la conexion del web serve
  
   * En algunos momentos para realizar el aprovisionamiento, era difícil hacer un state de saltstack, ya que en muchas ocasiones teníamos bastantes errores y las cosas no funcionaban como queríamos.
 
-  * En el momento de replicar la infraestructura en otra maquina diferente a la que se creo, se generaron multiples problemas, lo que retrazo en gran parte la iniciacion de la creacion del web server.
-
-
+  * En el momento de replicar la infraestructura en otra máquina diferente a la que se creó, se generaron múltiples problemas, lo que retrasó en gran parte la iniciación de la creación del web server.
