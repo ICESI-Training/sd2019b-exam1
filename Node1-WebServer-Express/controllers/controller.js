@@ -1,11 +1,17 @@
 'use strict'
 
+// Define the environmental variables (see .sample-env file and edit into .env)
+var envirinmentalConfig = require('dotenv');
+envirinmentalConfig.config();
+
+var IPv4networkInterface = process.env.IPV4_NETWORK_INTERFACE;
+
 // Define the actual service IPv4 and hostname:
 var operativeSystem = require('os');
 var networkInterfaces = operativeSystem.networkInterfaces();
 var apiServiceLocation = {
     apiServiceName:operativeSystem.hostname(),
-    apiServiceAddress: networkInterfaces['Conexión de red inalámbrica'][1].address
+    apiServiceAddress: networkInterfaces[IPv4networkInterface][1].address
 };
 
 /**
