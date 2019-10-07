@@ -1,35 +1,27 @@
-# sd2019b-exam1
-###Exam 1 - Examen #1 - Distributed Systems
+=======
+Exam 1
 
-Teacher: Daniel Barragan
+Integrantes:
 
-Changes made by: Andres Zapata
+- Andrés Zapata
+- William Chávez
+- Daniel Quintero
 
-###This fork modification contains (Actually):
+Primeros pasos
 
--Vagrantfile's configuration (CentOS 7, 512 mb ram per machine)
+1. Clonar el repositorio
+  
+	git clone https://github.com/gaearaz/sd2019b-exam1.git
+  
+2. Ingresar a la carpeta raíz del proyecto
+  
+	cd sd2019b-exam1
 
--Keys generated and working for the communication between master and webservers, database and loadBalancer machines
+3. Instalar guest-additions para Vagrant
 
--Salt states configured to install the following:
+	vagrant plugin install vagrant-vbguest
 
-	-common packages for all machines: htop, strace, nano
+4. Crear las máquinas virtuales
 
-	-loadBalancer: haproxy, apache
-	-webservers (webserver1 & webserver 2): nodejs, npm, nginx_s
-	-database: wget, mysql
-
-To run, follow this steps:
- > 1. Clone this repository 
- > 
- > 2. At CLI,In the root directory, type: 
- > 
- >  - `vagrant up`
- >  
- >  - `vagrant ssh master`
- >  
- >  - `sudo su`
- >  
- >  - `vagrant '*' state.apply`
-
+	vagrant up
 

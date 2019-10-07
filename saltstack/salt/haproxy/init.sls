@@ -1,9 +1,3 @@
 haproxy:
   pkg:
     - installed
-
-
-
-
-
-
