@@ -12,9 +12,10 @@ python:
       - python3-pip
 
 
+
 install_flask:
   cmd.run:
-    - name: 'pip3 install flask flask_sqlalchemy flask_script flask_migrate psycopg2-binary'
+    - name: '/usr/bin/pip3 install flask flask_sqlalchemy flask_script flask_migrate psycopg2-binary'
 
 
 /var/www/html/backend/models.py:
