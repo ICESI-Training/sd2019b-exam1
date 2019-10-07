@@ -7,7 +7,6 @@ require('dotenv').config();
 app.set("view engine", "ejs")
 app.use(bodyParser.urlencoded({ extended: false }))
 
-
 const pool = new Pool({
     user: process.env.PG_USER,
     host: process.env.PG_HOST,
