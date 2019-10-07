@@ -1,4 +1,4 @@
-# sd2019b-exam1
+=======
 Exam 1
 
 Integrantes:
@@ -24,3 +24,4 @@ Primeros pasos
 4. Crear las máquinas virtuales
 
 	vagrant up
+
