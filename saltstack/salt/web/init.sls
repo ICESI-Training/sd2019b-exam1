@@ -33,27 +33,31 @@ install_flask:
     - makedirs: True
 
 
+/var/www/html/templates/front.html:
+  file.managed:
+    #- template: jinja
+    - source: salt://web/backend/templates/front.html
+    - makedirs: True
+
+
+
 db init:
   cmd.run:
-    - name: 'sudo python3  /var/www/html/backend/manage.py db init'
+    - name: 'python3  /var/www/html/backend/manage.py db init 2>/dev/null'
 
 db migrate:
   cmd.run:
-    - name: 'sudo python3  /var/www/html/backend/manage.py db migrate'
+    - name: 'python3  /var/www/html/backend/manage.py db migrate 2>/dev/null'
 
 db upgrade:
   cmd.run:
-    - name: 'sudo python3  /var/www/html/backend/manage.py db upgrade'
+    - name: 'python3  /var/www/html/backend/manage.py db upgrade 2>/dev/null'
 
 run_server:
   cmd.run:
-    - name: 'sudo python3 /var/www/html/backend/app.py'
+    - name: 'python3 /var/www/html/backend/app.py 2>/dev/null'
 
 
-/var/www/html/templates/front.html:
-  file.managed:
-    - template: jinja
-    - source: salt://web/backend/templates/front.html
 
 
 /var/www/html/index.html:
