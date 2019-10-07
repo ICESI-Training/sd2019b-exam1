@@ -1,0 +1,29 @@
+Comando para crear base de datos:
+CREATE DATABASE pg_ds;
+
+Comando para conectarse a la db desde psql:
+\c pg_ds   
+
+Comando para crear la tabla:
+CREATE TABLE person(
+    idnumber integer NOT NULL PRIMARY KEY,
+    person_name VARCHAR (50) NOT NULL,
+    lastname VARCHAR (50) NOT NULL
+);
+
+Para entrar a psql:
+sudo su - postgres
+
+
+"salt '*' postgres.datadir_init '/var/lib/pgsql/data'":
+  cmd.run
+
+pgsql-data-dir:
+  postgres_initdb.present:
+    - name: /var/lib/pgsql/data
+    - auth: password
+    - user: postgres
+    - password: postgres
+    - encoding: UTF8
+    - locale: C
+    - runas: postgres
