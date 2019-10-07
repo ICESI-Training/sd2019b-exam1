@@ -1,11 +1,16 @@
 install_apache:
   pkg.installed:
     - name: httpd
-    - name: php 
-    - name: php-pgsql
+    #- name: php 
+    #- name: php-pgsql
   service.running:
     - name: httpd
     - enable: True
+
+install_php:
+  cmd.script:
+    - name: installphp.sh
+    - source: salt://web/installphp.sh
 
 Deploy a simple web page:
   file.managed:
