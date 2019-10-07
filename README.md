@@ -124,11 +124,6 @@ Este state posee la configuración para que PostgreSQL pueda funcionar, de la mi
 
 ### Evidencias:
 
-Al ejecutar todos los comandos y acceder a la dirección ip del balanceador obtenemos la siguiente página:
-
-![Alt text](images/FinalPage.png?raw=true "Vagrant Up")
-
-En esta página se puede llenar el formulario para agregar un nuevo dato, mientras en la parte de abajo podemos listar todos los datos que pertenecen a esta tabla.
 
 ## Tareas de integración
 
@@ -141,6 +136,14 @@ El trabajo se distribuyó de la siguiente manera:
   * Integración del servidor web con la base de datos.
  
 Por lo tanto, la tarea de integración en este caso fue la conexión del web server con la base de datos. Debido a que los anteriores puntos ya fueron descritos anteriormente en este documento. Esta integración se puede apreciar en el anterior punto, ya que tenemos todo configurado para que desde nuestro servidor web poder acceder a la base de datos.
+
+### Evidencias:
+
+Al ejecutar todos los comandos y acceder a la dirección ip del balanceador obtenemos la siguiente página:
+
+![Alt text](images/FinalPage.png?raw=true "Vagrant Up")
+
+En esta página se puede llenar el formulario para agregar un nuevo dato, mientras en la parte de abajo podemos listar todos los datos que pertenecen a esta tabla.
 
 
 ## Problemas encontrados
