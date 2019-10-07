@@ -54,13 +54,12 @@ Para obtener la dirección ip del Load Balancer ejecutan:
 ~~~
 Luego ingresan esa dirección a su navegador, recargan para ver la diferencia entre los servidores.
 
-Para ejecutar el estado sobre la Data Base
+Para ejecutar el state sobre la máquina que posee la base de datos debemos ejecutar:
 ~~~
   salt 'data*' state.apply
 ~~~
 
-Si en la terminal todo les sale correcto, quiere decir que ya todo quedó bien instalado. :)
-
+Al ejecutar todos estos comandos debemos ingresar a la dirección , corresponde a la ip del balanceador de carga, por lo tanto alterna entre los dos servidores disponibles.
 
 ### Solución de errores
 
@@ -68,7 +67,7 @@ Error: Minion did not return. [Not connected]
 
 Desde el host correr:
 ~~~
-  vagrant provision 
+  vagrant provision
 ~~~
 
 Si al ejecutar el orchestration sale que la dirección por la que se correrá la app ya está ocupada, se debe matar el proceso en ambos web server
@@ -83,15 +82,22 @@ Si al ejecutar el orchestration sale que la dirección por la que se correrá la
 
 ### Evidencias:
 
+
+
 ## Aprovisionamiento de los servidores web
 
 ### Descripción:
 
-Para el aprovisionamiento de los servidores web se instaló apache, lo que nos permite tener un servidor para responder y procesar peticiones. Sobre este apache, estamos utilizando la tecnología {{{INSERTAR TECNOLOGÍA}}}}}
-, que nos permite procesar las solicitudes hechas por medio de la página web y hacer peticiones a la base de datos.   
+Para el aprovisionamiento de los servidores web se instaló apache, lo que nos permite tener un servidor para responder y procesar peticiones. Sobre este apache, estamos utilizando HTML y PHP, que nos permite procesar las solicitudes hechas por medio de la página web y hacer peticiones a la base de datos.   
 
 ### Procedimiento:
 
+El siguiente comando (Ejecutado anteriormente), permite tanto la instalación de haproxy como en cada uno de los servidores web apache, PHP y las librerías de PHP necesarias para ejecutar consultas a una base de datos PostgreSQL. Por lo tanto, después de la ejecución de este comando los servidores quedan listos. Además, en el state, se creó una página con PHP que permite agregar y visualizar los valores en la base de datos.
+
+~~~
+  sudo su
+  salt-run state.orch apache_orchestration
+~~~
 
 ### Evidencias:
 
@@ -102,14 +108,20 @@ Para el aprovisionamiento de los servidores web se instaló apache, lo que nos p
 
 Para el aprovisionamiento de la base de datos, se creó un state que permite instalar postgresql en la máquina virtual llamada dataBase. Esto permite almacenar diferentes tipos de datos y que los servidores puedan consulta estos.
 
+En ese state, también se ejecutan scripts, estos permiten la creación de la base de datos y de una tabla, en la cual vamos a agregar y a traer datos.
+
 ### Procedimiento:
 
+Para ejecutar el state sobre la máquina que posee la base de datos debemos ejecutar:
+~~~
+  salt 'data*' state.apply
+~~~
+Este state posee la configuración para que PostgreSQL pueda funcionar, de la misma manera crea la base de datos y una tabla.
 
 ### Evidencias:
 
 
 ## Tareas de integración
-
 
 ### Descripción:
 El trabajo se distribuyó de la siguiente manera:
@@ -119,9 +131,7 @@ El trabajo se distribuyó de la siguiente manera:
   * Creación de la base de datos.
   * Integración del servidor web con la base de datos.
  
-Por lo tanto, la tarea de integración en este caso fue la conexión del web server con la base de datos. Debido a que los anteriores puntos ya fueron descritos anteriormente en este documento.
-
-### Evidencias:
+Por lo tanto, la tarea de integración en este caso fue la conexión del web server con la base de datos. Debido a que los anteriores puntos ya fueron descritos anteriormente en este documento. Esta integración se puede apreciar en el anterior punto, ya que tenemos todo configurado para que desde nuestro servidor web poder acceder a la base de datos.
 
 
 ## Problemas encontrados
@@ -131,3 +141,4 @@ Por lo tanto, la tarea de integración en este caso fue la conexión del web ser
   * En algunos momentos para realizar el aprovisionamiento, era difícil hacer un state de saltstack, ya que en muchas ocasiones teníamos bastantes errores y las cosas no funcionaban como queríamos.
 
   * En el momento de replicar la infraestructura en otra máquina diferente a la que se creó, se generaron múltiples problemas, lo que retrasó en gran parte la iniciación de la creación del web server.
+
