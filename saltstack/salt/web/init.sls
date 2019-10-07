@@ -35,28 +35,29 @@ install_flask:
 
 db init:
   cmd.run:
-    - name: ' python3  /var/www/html/backend/manage.py db init'
+    - name: 'sudo python3  /var/www/html/backend/manage.py db init'
 
 db migrate:
   cmd.run:
-    - name: ' python3  /var/www/html/backend/manage.py db migrate'
+    - name: 'sudo python3  /var/www/html/backend/manage.py db migrate'
 
 db upgrade:
   cmd.run:
-    - name: ' python3  /var/www/html/backend/manage.py db upgrade'
+    - name: 'sudo python3  /var/www/html/backend/manage.py db upgrade'
 
 run_server:
   cmd.run:
-    - name: ' python3 /var/www/html/backend/app.py'
+    - name: 'sudo python3 /var/www/html/backend/app.py'
 
 
+/var/www/html/templates/front.html:
+  file.managed:
+    - template: jinja
+    - source: salt://web/backend/templates/front.html
 
 
 /var/www/html/index.html:
   file.managed:
     - template: jinja
     - source: salt://web/conf/index.html
-#/var/www/html/index.json:
-#  file.managed:
-#    - template: jinja
-#    - source: salt://web/conf/index.json
+

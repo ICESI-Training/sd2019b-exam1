@@ -16,7 +16,6 @@ app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@192.168.50.130:5432/ds_database'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
 app.config['SECRET_KEY'] = 'ds4ever'
-#db= SQLAlchemy(app)
 db.init_app(app)
 api_url = '/api'
 
