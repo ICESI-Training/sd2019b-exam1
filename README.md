@@ -180,17 +180,13 @@ ssh-keygen rsa
 
 Sin embargo, a la hora de hacer el intercambio de keys entre el master y los minions, se producía un error. Como alternativa, un poco chambona, se nos ocurrió copiar el contenido de las keys de minionws2 y ponerlas en miniondb.pem y miniondb.pub según correspondiera, ¡así nos funcionó!
 
-![][1]
-[1]: images/state_apply_minionws1.png
-**Figura 1**. Diagrama de Despliegue
+![Alt text](images/state_apply_minionws1.png?raw=true "")
 
-![][1]
-[1]: images/state_apply_miniondb.png
-**Figura 1**. Diagrama de Despliegue
+![Alt text](images/state_apply_minionws2.png?raw=true "")
 
-![][1]
-[1]: images/state_apply_minionlb.png
-**Figura 1**. Diagrama de Despliegue
+![Alt text](images/state_apply_minionwlb.png?raw=true "")
+
+![Alt text](images/state_apply_minionwdb.png?raw=true "")
 
 ---
 
@@ -405,9 +401,7 @@ Nos ubicamos nuevamente en *web*, dentro creamos la carpeta *__pycache__*
 ~~~
 ~~~
 
-![][2]
-[2]: images/webserver1.png
-**Figura 1**. Diagrama de Despliegue
+![Alt text](images/webserver1.png?raw=true "")
 
 Nos ubicamos en *web2*.
 
@@ -574,9 +568,7 @@ apache2 restart:
     - name: sudo systemctl restart apache2
 ~~~
 
-![][3]
-[3]: images/webserver2.png
-**Figura 1**. Diagrama de Despliegue
+![Alt text](images/webserver2.png?raw=true "")
 
 7. Load Balancer
 
