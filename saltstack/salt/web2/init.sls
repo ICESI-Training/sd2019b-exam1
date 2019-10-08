@@ -52,27 +52,22 @@ install_flask:
 
 
 
-
-rm migrations:
-  cmd.run:
-    - name: if [ -d /var/www/html/backend/models/ ] ; then rm -Rf /var/www/html/backend/models ; fi
-
-
-db init:
-  cmd.run:
-    - name: 'python3  /var/www/html/backend/manage.py db init --directory /var/www/html/backend/models/migrations'
-
-db migrate:
-  cmd.run:
-    - name: 'python3  /var/www/html/backend/manage.py db migrate --directory /var/www/html/backend/models/migrations'
-
-db upgrade:
-  cmd.run:
-    - name: 'python3  /var/www/html/backend/manage.py db upgrade --directory /var/www/html/backend/models/migrations'
-
-#run_server:
+#rm migrations:
  # cmd.run:
- #   - name: 'python3 /var/www/html/backend/app.py '
+  #  - name: if [ -d /var/www/html/backend/models/ ] ; then rm -Rf /var/www/html/backend/models ; fi
+
+
+#db init:
+ # cmd.run:
+  #  - name: 'python3  /var/www/html/backend/manage.py db init --directory /var/www/html/backend/models/migrations'
+
+#db migrate:
+#  cmd.run:
+ #   - name: 'python3  /var/www/html/backend/manage.py db migrate --directory /var/www/html/backend/models/migrations'
+
+#db upgrade:
+#  cmd.run:
+ #   - name: 'python3  /var/www/html/backend/manage.py db upgrade --directory /var/www/html/backend/models/migrations'
 
 
 #flask-apache
@@ -95,3 +90,4 @@ enable site:
 apache2 restart:
   cmd.run:
     - name: sudo systemctl restart apache2
+
