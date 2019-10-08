@@ -43,7 +43,7 @@ install_flask:
 /var/www/html/backend/templates/front.html:
   file.managed:
     #- template: jinja
-    - source: salt://web/backend/templates/front.html
+    - source: salt://web2/front.html
     - makedirs: True
 
 
@@ -81,12 +81,11 @@ db upgrade:
     - template: jinja
     - source: salt://web/conf/app.wsgi
 
+
 /etc/apache2/sites-available/ExampleFlask.conf:
   file.managed:
     - template: jinja
-    - source: salt://web/conf/ExampleFlask.conf
-
-
+    - source: salt://web2/ExampleFlask.conf
 
 
 enable site:

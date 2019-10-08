@@ -1,7 +1,10 @@
 base:
-  'minionws*':
+  'minionws1':
     - web
-  'master':
+  'minionws2':
+    - web2
+  'minionlb':
     - balancer
   '*db*':
     - database
+  
