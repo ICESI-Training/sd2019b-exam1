@@ -7,6 +7,10 @@
 ### Nota:
   Se debe tener agregada la vagrant box llamada "centos/7"
 
+## Diagrama de despliegue
+
+![Alt text](images/diagrama.png?raw=true "Vagrant Up")
+
 ## Direcciones IP de las máquinas (Actualmente fijas)
 
 Máquina | Dirección IP
@@ -168,10 +172,10 @@ Para ejecutar el state sobre la máquina que posee la base de datos se debe ejec
 ### Descripción:
 El trabajo se distribuyó de la siguiente manera:
   * Creación y despliegue de la infraestructura
-    * Creación del Vagrantfile y asignación de las especificaciones de cada máquina
+    * Creación del *Vagrantfile* y asignación de las especificaciones de cada máquina
   * Creación de el balanceador de carga
     * Instalación de HAProxy
-    * Creación del archivo haproxy.cfg
+    * Creación del archivo *haproxy.cfg*
   * Creación del servidor web
     * Instalación de Apache (HTTP) y PHP
     * Instalación de paquetes que permitan la conexión a PostreSQL
@@ -189,6 +193,23 @@ Por lo tanto, la tarea de integración en este caso fue la configuración y cone
 
 ### Evidencias:
 
+Para lograr la completa integración de la solución se debió configurar adecuadamente el *Vagrantfile* en el cual se definen las direcciones ips de cada uno de los nodos, tanto del master como de los minions, así como las carpetas que estos comparten. A continuación, se pueden observar algunas capturas de dicho archivo, donde se evidencia la configuración del master, las carpetas compartidas que contienen las claves públicas para la comunicación SSH y las especificaciones de los minions, respectivamente.
+
+![Alt text](images/master-vagrantfile.png?raw=true "Vagrant Up")
+
+![Alt text](images/llaves-vagranfile.png?raw=true "Vagrant Up")
+
+![Alt text](images/ips_vagrantFile.png?raw=true "Vagrant Up")
+
+Además, en el archivo *haproxy.cfg* se configuró que el balanceador de carga escucha el protocolo http mediante el puerto 80 y redirecciona a las direcciones ip de los servidores web, también por el mismo puerto.
+
+![Alt text](images/haproxy.png?raw=true "Vagrant Up")
+
+Por otro lado, en la configuración de cada uno de los minions se establece la dirección ip del master, el puerto por el que este se comunica y la ruta en la que se encuentran las llaves compartidas.
+
+![Alt text](images/minion_apunta_master.png?raw=true "Vagrant Up")
+
+
 Finalmente, al ejecutar todos los comandos y acceder a la dirección ip del balanceador se obtiene la siguiente página:
 
 ![Alt text](images/finalpage1.png?raw=true "Vagrant Up")
@@ -205,4 +226,6 @@ En esta página se puede llenar el formulario para agregar un nuevo dato, mientr
   * En ciertos momentos para realizar el aprovisionamiento de las máquinas, fue difícil hacer los states de saltstack, debido a que muchas de las fórmulas de esta tecnología se pueden encontrar en internet pero al intentar aplicarlas en nuestra solución no funcionaban como se esperaba. Para lo anterior, se definió la estrategía de ir aplicando cada uno de los estados de los *sls* de manera incremental para identificar cuales de los estados funcionaban y cuales fallaban. Por otro lado, hubo ocasiones en que las funciones provistas por Saltstack no permitieron cumplir con lo requerido, debido a esto, se optó por la realización y ejecución automática de ciertos **scripts**.
 
   * En el momento de replicar la infraestructura en otra máquina diferente a la que se creó, se generaron múltiples problemas, lo que retrasó en gran parte el aprovisionamiento de las máquinas debido a pérdidas de conexión entre los minions principalmente.
+
+  * En un principio, se había decidido utilizar Python como lenguaje back-end para que este montara el servicio web y realizara las peticiones a la base de datos, se llegó al punto de instalar todas las dependencias necesarias como: Python, Flask y psycopg2. Sin embargo, se presentaron múltiples inconvenientes a la hora de acceder al servicio web ya desplegado desde el balanceador de carga, fue debido a esto, que se optó por utilizar PHP para cumplir con la necesidad requerida, ya que permitió realizar las operaciones a la base de datos y mostrar los resultados directamente en el html de la página web.
 
