@@ -229,3 +229,14 @@ En esta página se puede llenar el formulario para agregar un nuevo dato, mientr
 
   * En un principio, se había decidido utilizar Python como lenguaje back-end para que este montara el servicio web y realizara las peticiones a la base de datos, se llegó al punto de instalar todas las dependencias necesarias como: Python, Flask y psycopg2. Sin embargo, se presentaron múltiples inconvenientes a la hora de acceder al servicio web ya desplegado desde el balanceador de carga, fue debido a esto, que se optó por utilizar PHP para cumplir con la necesidad requerida, ya que permitió realizar las operaciones a la base de datos y mostrar los resultados directamente en el html de la página web.
 
+
+### REFERENCIAS
+
+* https://docs.saltstack.com/en/latest/
+* https://docs.saltstack.com/en/latest/ref/states/all/index.html
+* https://docs.saltstack.com/en/getstarted/fundamentals/index.html
+* https://docs.saltstack.com/en/getstarted/config/index.html
+* https://stackoverflow.com/questions/18223665/postgresql-query-from-bash-script-as-database-user-postgres
+* https://serversforhackers.com/c/load-balancing-with-haproxy
+* https://stackoverflow.com/questions/29712228/node-postgres-get-error-connect-econnrefused
+* https://docs.saltstack.com/en/latest/ref/modules/all/salt.modules.yumpkg.html#module-salt.modules.yumpkg
