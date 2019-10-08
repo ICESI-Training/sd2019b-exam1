@@ -101,9 +101,11 @@ Los comandos que se describieron en esta sección están en el archivo **postgre
 
 
 ## 7. Integración
-En el archivo **top.sls** se definió que estados se iban a aplicar en las diferentes máquinas, en este caso el estado node, que hace referencia a lo que está en el archivo node.sls,  se aplicará sobre las maquinas web-1 y web-2, es decir, los web servers. El estado postgres, que hace referencia a lo que está en el archivo postgres.sls, se aplicará sobre la máquina database y el estado haproxy, que hace referencia a lo que está en el archivo haproxy.sls, se aplicará en la máquina load-balancer.
+En el archivo **top.sls** se definió que estados se iban a aplicar en las diferentes máquinas, en este caso el estado node, que hace referencia a lo que está en el archivo node.sls,  se aplicará sobre las maquinas web-1 y web-2, es decir, los web servers. El estado postgres, que hace referencia a lo que está en el archivo postgres.sls, se aplicará sobre la máquina database, y el estado haproxy, que hace referencia a lo que está en el archivo haproxy.sls, se aplicará en la máquina load-balancer.
 _imagen_
-A la hora de aplicar los estados desde la máquina master con el comando salt ‘nombre-máquina’ state.apply  se debe aplicar primero sobre la máquina database debido a que si se lanzan primero los servicios web y después database, los servidores web dejan se caen debido a un cambio que se realiza en los archivos de configuración de postgres
+
+A la hora de aplicar los estados desde la máquina master con el comando salt ‘nombre-máquina’ state.apply  se debe aplicar primero sobre la máquina database debido a que si se lanzan primero los servicios web y después database, los servidores web dejan se caen debido a un cambio que se realiza en los archivos de configuración de postgres.
+
 Los comandos que se deben ejecutar para el aprovisionamiento son:
 1. Dirigirse a la carpeta sd2019b-exam1 y ejecutar el comando `vagrant up`
 _imagen_
