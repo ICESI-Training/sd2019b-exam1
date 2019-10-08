@@ -616,6 +616,10 @@ haproxy:
 
 ~~~
 
+![Alt text](images/lb_server1.png?raw=true "")
+
+![Alt text](images/lb_server2.png?raw=true "")
+
 8. Database
 
 Nos ubicamos en la carpeta *salt*, accedemos a al archivo *top.sls* y agregamos lo siguiente:
