@@ -161,15 +161,18 @@ Si aparece el nombre del minion y seguido de True, todo salió bien :).
 
 5. Configuración inicial de los minions
 
-En nuestra arquitectura tenemos cuatro máquinas virtuales:
-* Load Balancer - master - como el nombre lo indica cumplirá el rol de master y a su vez de balanceador de carga. No hicimos el master por separado para ahorrarnos una máquina virtual. **IP:** 192.168.50.10. **RAM:** 512
+En nuestra arquitectura tenemos 5 máquinas virtuales:
+* Master - master - como el nombre lo indica cumplirá el rol de master y a su vez de balanceador de carga. No hicimos el master por separado para ahorrarnos una máquina virtual. **IP:** 192.168.50.10. **RAM:** 512
 * Webserver 1 - minionws1 - minion encargado de tener el Webserver 1. **IP:** 192.168.50.110. **RAM:** 512
 * Webserver 2 - minionws2 - minion encargado de tener el Webserver 1. **IP:** 192.168.50.120. **RAM:** 512
 * Database - miniondb - minion encargo de tener la base de datos. **IP:** 192.168.50.130. **RAM:** 512
+* Load Balancer - miniondb - minion encargo de hacer las veces de balanceador de carga con los Webservers. **IP:** 192.168.50.140. **RAM:** 512
 
 El archivo salt-vagrant-demo que copiamos venía con master, minion1 y minion2. Cada uno de ellos adicionalmente tenía un id con el mismo nombre y unas keys (pem y pub). Todas las referencias de minion1 se reemplazaron por minionws1 y las referencias de minion2 se reemplazaron por minionws2.
 
 Para miniondb se copió la configuración de uno de los otros minions existentes y se reemplazaron las referencias por miniondb.
+
+Para minionlb se copió la configuración de uno de los otros minions existentes y se reemplazaron las referencias por minionlb.
 
 Para las keys, se aplicó por la terminal el comando:
 
@@ -179,51 +182,546 @@ ssh-keygen rsa
 
 Sin embargo, a la hora de hacer el intercambio de keys entre el master y los minions, se producía un error. Como alternativa, un poco chambona, se nos ocurrió copiar el contenido de las keys de minionws2 y ponerlas en miniondb.pem y miniondb.pub según correspondiera, ¡así nos funcionó!
 
+![][1]
+[1]: images/state_apply_minionws1.png
+**Figura 1**. Diagrama de Despliegue
+
+![][1]
+[1]: images/state_apply_miniondb.png
+**Figura 1**. Diagrama de Despliegue
+
+![][1]
+[1]: images/state_apply_minionlb.png
+**Figura 1**. Diagrama de Despliegue
+
 ---
 
 6. Webserver 1 y 2
 
-Ubicarse en la carpeta *salt*, acceder a al archivo *top.sls* y agregar lo siguiente:
+Nos ubicamos en la carpeta *salt*, accedemos a al archivo *top.sls* y agregamos lo siguiente:
 
 ~~~
-'minionws*':
-  - web
+  'minionws1':
+    - web
+  'minionws2':
+    - web2
 ~~~
 
 El archivo *top.sls* queda de la siguiente manera:
 
 ~~~
 base:
-  '*':
-    - common
-  'minionws*':
+  'minionws1':
     - web
+  'minionws2':
+    - web2
 ~~~
 
 Dentro de *top.sls* crear la carpeta *web*.
 
-Nos ubicamos en *web* y creamos el archivo *init.sls* con el contenido:
+Nos ubicamos en *web* y creamos dos carpetas: *backend* y *conf*.
+
+Nos ubicamos en *conf*.
+
+Primero creamos el archivo *ExampleFlask.conf* y le agregamos el siguiente contenido:
 
 ~~~
+<VirtualHost *:80>
+     # Add machine's IP address (use ifconfig command)
+     ServerName 192.168.50.110
+     # Give an alias to to start your website url with
+     WSGIScriptAlias / /var/www/html/backend/app.wsgi
+     <Directory /var/www/html/backend/>
+                # set permissions as per apache2.conf file
+            Options FollowSymLinks
+            AllowOverride None
+            Require all granted
+     </Directory>
+     ErrorLog ${APACHE_LOG_DIR}/error.log
+     LogLevel warn
+     CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+~~~
+
+Este archivo se encarga de ...
+
+Después creamos el archivo *app.wsgi* y le agregamos el siguiente contenido:
+
+~~~
+#! /usr/bin/python3.6
+
+import logging
+import sys
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0, '/var/www/html/backend/')
+from app import app as application
+application.secret_key = 'ds4ever'
+~~~
+
+Este archivo se encarga de ...
+
+Ahora nos ubicamos en *backend*.
+
+Creamos el archivo *app.py*.
+~~~
+from flask import Flask, request, flash, render_template
+from models import db
+from models import User
+from flask_sqlalchemy import SQLAlchemy
+app = Flask(__name__)
+
+POSTGRES = {
+    'user': 'postgres',
+    'pw': 'postgres',
+    'db':'ds_database',
+    'host': '192.168.50.130',
+    'port': '5432',
+}
+
+app.config['DEBUG'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@192.168.50.130:5432/ds_database'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
+app.config['SECRET_KEY'] = 'ds4ever'
+db.init_app(app)
+api_url = '/api'
+
+@app.route("/")
+def home():
+    return render_template("front.html")
+
+@app.route(api_url+'/users', methods=['GET'])
+def read_user():
+       # return User.query.all()[0].name
+        return render_template('front.html', users=User.query.all())
+
+@app.route(api_url+'/users', methods=['POST'])
+def create_user():
+        user=User(request.form['id'], request.form['name'])
+        db.session.add(user)
+        db.session.commit()
+        flash('Record was successfully added')
+      #  return 'create one users'
+        return render_template('front.html')
+
+if __name__ == "__main__":
+    app.run()
+~~~
+
+Creamos el archivo *manage.py*
+
+~~~
+from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
+from app import app, db
+
+manager = Manager(app)
+migrate = Migrate(app, db)
+manager.add_command('db', MigrateCommand)
+
+if __name__ == '__main__':
+    manager.run()
+~~~
+
+Creamos el archivo *models.py*
+
+~~~
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
+
+    def __repr__(self):
+        return '<User %r>' % self.name
+
+    def __init__(self, id, name):
+        self.id = id
+        self.name = nam
+~~~
+
+Creamos la carpeta *templates* y dentro creamos el archivo *front.html*
+
+~~~
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <h1>Distributed Systems Users</h1>
+    <h4>Using machine: 192.168.50.110</h4>
+<form method="POST" action="/api/users">
+  <div class="form-group row">
+    <label for="inputEmail3" class="col-sm-2 col-form-label">Id</label>
+    <div class="col-sm-10">
+      <input type="input" class="form-control" name="id" id="inputEmail3" placeholder="id">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
+    <div class="col-sm-10">
+      <input type="input" class="form-control" name="name" id="inputEmail3" placeholder="Name">
+    </div>
+  </div>
+
+  </div>
+   <div class="form-group row">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+  </div>
+
+</form>
+
+<h1>Users:</h1>
+  <table class="table">
+    <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">Name</th>
+
+        </tr>
+      </thead>
+      <tbody>
+          {% for user in users %}
+          <tr>
+              <td>{{user.id}}</td>
+              <td>{{user.name}}</td>
+          </tr>
+          {% endfor %}
+    </tbody>
+  </table>
+  <form method="GET" action="/api/users">
+    <button type="submit" class="btn btn-primary">Show results</button>
+  </form>
+</body>
+
+</html>
+~~~
+
+Nos ubicamos nuevamente en *web*, dentro creamos la carpeta *__pycache__*
+
+~~~
+~~~
+
+![][2]
+[2]: images/webserver1.png
+**Figura 1**. Diagrama de Despliegue
+
+Nos ubicamos en *web2*.
+
+Creamos el archivo *ExampleFlask.conf*
+
+~~~
+<VirtualHost *:80>
+     # Add machine's IP address (use ifconfig command)
+     ServerName 192.168.50.120
+     # Give an alias to to start your website url with
+     WSGIScriptAlias / /var/www/html/backend/app.wsgi
+     <Directory /var/www/html/backend/>
+                # set permissions as per apache2.conf file
+            Options FollowSymLinks
+            AllowOverride None
+            Require all granted
+     </Directory>
+     ErrorLog ${APACHE_LOG_DIR}/error.log
+     LogLevel warn
+     CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost
+~~~
+
+Creamos el archivo *front.html*
+
+~~~
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <h1>Distributed Systems Users</h1>
+    <h4>Using machine: 192.168.50.120</h4>
+<form method="POST" action="/api/users">
+  <div class="form-group row">
+    <label for="inputEmail3" class="col-sm-2 col-form-label">Id</label>
+    <div class="col-sm-10">
+      <input type="input" class="form-control" name="id" id="inputEmail3" placeholder="id">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
+    <div class="col-sm-10">
+      <input type="input" class="form-control" name="name" id="inputEmail3" placeholder="Name">
+    </div>
+  </div>
+
+  </div>
+   <div class="form-group row">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+  </div>
+</form>
+
+<h1>Users:</h1>
+<table class="table">
+
+    <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">Name</th>
+        </tr>
+    </thead>
+    <tbody>
+          {% for user in users %}
+          <tr>
+              <td>{{user.id}}</td>
+              <td>{{user.name}}</td>
+          </tr>
+          {% endfor %}
+    </tbody>
+  </table>
+
+  <form method="GET" action="/api/users">
+    <button type="submit" class="btn btn-primary">Show results</button>
+  </form>
+</body>
+
+</html>
+~~~
+
+Creamos el archivo *init.sls*
+
+~~~
+# install the web server package
 apache2:
   pkg.installed:
     - name: apache2
   service.running:
     - enable: true
 
-/var/www/html/index.html:
+python:
+  pkg.installed:
+    - pkgs:
+      - python3.6
+      - python3-pip
+      - libapache2-mod-wsgi-py3
+
+install_flask:
+  cmd.run:
+    - name: '/usr/bin/pip3 install flask flask_sqlalchemy flask_script flask_migrate psycopg2-binary'
+
+/var/www/html/backend/models.py:
+  file.managed:
+    - source: salt://web/backend/models.py
+    - makedirs: True
+
+/var/www/html/backend/app.py:
+  file.managed:
+    - source: salt://web/backend/app.py
+    - makedirs: True
+
+/var/www/html/backend/manage.py:
+  file.managed:
+    - source: salt://web/backend/manage.py
+    - makedirs: True
+
+/var/www/html/backend/templates/front.html:
+  file.managed:
+    #- template: jinja
+    - source: salt://web2/front.html
+    - makedirs: True
+
+rm migrations:
+  cmd.run:
+    - name: if [ -d /var/www/html/backend/models/ ] ; then rm -Rf /var/www/html/backend/models ; fi
+
+db init:
+  cmd.run:
+    - name: 'python3  /var/www/html/backend/manage.py db init --directory /var/www/html/backend/models/migrations'
+
+db migrate:
+  cmd.run:
+    - name: 'python3  /var/www/html/backend/manage.py db migrate --directory /var/www/html/backend/models/migrations'
+
+db upgrade:
+  cmd.run:
+    - name: 'python3  /var/www/html/backend/manage.py db upgrade --directory /var/www/html/backend/models/migrations'
+
+#run_server:
+ # cmd.run:
+ #   - name: 'python3 /var/www/html/backend/app.py '
+
+#flask-apache
+/var/www/html/backend/app.wsgi:
   file.managed:
     - template: jinja
-    - source: salt://web/conf/index.html
+    - source: salt://web/conf/app.wsgi
+
+/etc/apache2/sites-available/ExampleFlask.conf:
+  file.managed:
+    - template: jinja
+    - source: salt://web2/ExampleFlask.conf
+
+enable site:
+  cmd.run:
+    - name: sudo a2ensite ExampleFlask.conf
+
+apache2 restart:
+  cmd.run:
+    - name: sudo systemctl restart apache2
 ~~~
 
-Dentro de la carpeta *web*, creamos la carpeta *conf* y dentro de ella, creamos el archivo index.html con el contenido:
+![][3]
+[3]: images/webserver2.png
+**Figura 1**. Diagrama de Despliegue
+
+7. Load Balancer
+
+Nos ubicamos en la carpeta *salt*, accedemos a al archivo *top.sls* y agregamos lo siguiente:
 
 ~~~
-<html>
-  <body>
-    <h1>Server Up and Running!</h1>
-  </body>
-</html>
+  'minionlb':
+    - balancer
 ~~~
 
+El archivo *top.sls* queda de la siguiente manera:
+
+~~~
+base:
+  'minionws1':
+    - web
+  'minionws2':
+    - web2
+  'minionlb':
+    - balancer
+~~~
+
+8. Database
+
+Nos ubicamos en la carpeta *salt*, accedemos a al archivo *top.sls* y agregamos lo siguiente:
+
+~~~
+  'miniondb':
+    - balancer
+~~~
+
+El archivo *top.sls* queda de la siguiente manera:
+
+~~~
+base:
+  'minionws1':
+    - web
+  'minionws2':
+    - web2
+  'minionlb':
+    - balancer
+  'miniondb':
+    - database
+~~~
+
+Como base de datos utilizamos PostgreSQL.
+
+Creamos la carpeta *database*. Dentro, creamos el archivo *init.sls* y le agregamos el contenido:
+~~~
+include:
+  - database.packages
+~~~
+Luego creamos el archivo *packages.sls*, también dentro de la carpeta *database*, y adicionamos la configuración.
+
+Lo primero que se hace es la instalación de las dependencias que se necesitan.
+~~~
+postgresql:
+  pkg.installed:
+    - pkgs:
+      - postgresql
+      - postgresql-contrib
+      - libpq-dev
+~~~
+Segundo, nos aseguramos de que el servicio PostgreSQL se esté ejecutando y lo habilitamos para que se inicie al arrancar.
+~~~
+#Make sure the postgresql service is running and enable it to start at boot:
+  service.running:
+    - name: postgresql
+    - enable: True
+~~~
+Tercero, validamos si existe o no una base de datos, y en caso de que exista, la borramos.
+~~~
+remove db if exists:
+  cmd.run:
+    - name: sudo -u postgres -H -i sh -c "psql -c 'DROP DATABASE IF EXISTS ds_database;'"
+~~~
+Cuarto, creamos la base de datos y ponemos como dueño al usuario postgres (usuario que se crea por defecto).
+~~~
+create db:
+  cmd.run:
+    - name: sudo -u postgres -H -i sh -c "psql -c 'CREATE DATABASE ds_database OWNER=postgres;'"
+~~~
+Quinto, le damos todos los privilegios al usuario postgres para que pueda hacer "lo que quiera" con la base de datos.
+~~~
+grant all privileges db:
+  cmd.run:
+    - name: sudo -u postgres -H -i sh -c "psql -c 'GRANT ALL PRIVILEGES ON DATABASE ds_database TO postgres;'"
+~~~
+Sexto, cambiamos la contraseña del usuario porque habían unos problemas (acceder desde la aplicación a la base de datos).
+~~~
+change password pguser:
+  cmd.run:
+    - name: sudo -u postgres -H -i sh -c "psql -c 'ALTER USER ds_user PASSWORD '\'postgres\'';'"
+~~~
+Séptimo, brindamos permiso para que la base de datos pueda escuchar todas las direcciones.
+~~~
+append pg.conf:
+  file.append:
+    - name: /etc/postgresql/10/main/postgresql.conf
+    - text: listen_addresses = '*'
+~~~
+Octavo, brindamos permiso a todos los host para aceder al puerto 5432 (puerto por default de postgres).
+~~~
+append pg_hba.conf:
+  file.append:
+    - name: /etc/postgresql/10/main/pg_hba.conf
+    - text: |
+        host    all             all              0.0.0.0/0                       md5
+        host    all             all              ::/0                            md5
+~~~~
+Finalmente, reiniciamos el servicio de PostgreSQL para que se apliquen los cambios.
+~~~
+restart pg service:
+  cmd.run:
+    - name: sudo /etc/init.d/postgresql restart
+~~~
+
+9. Tareas de integración
+
+|         Tarea       | Desarrollador |
+| ------------------- | ------------- |
+|Instalar Vagrant     | Todos         |
+|Instalar VirtualBox  | Todos         |
+|Instalar Saltstack   | Todos         |
+|Editar Vagrantfile   | Todos         |
+|Webservers           | Juan Esteban  |
+|Load Balancer        | Cristian      |
+|Database             | Johnatan      |
+
+10. Referencias
+
+Entre nuestras referencias bibliográficas se encuentran:
+
+https://www.genbeta.com/guia-de-inicio/que-es-markdown-para-que-sirve-y-como-usarlo
+http://daringfireball.net/projects/markdown/syntax
+http://joedicastro.com/pages/markdown.html
+https://www.vagrantup.com/docs/installation/
+https://vitux.com/how-to-install-virtualbox-on-ubuntu/
+https://github.com/UtahDave/salt-vagrant-demo
+https://github.com/saltstack-formulas/apache-formula
+https://github.com/salt-formulas/salt-formula-haproxy
+https://www.linode.com/docs/applications/configuration-management/configure-apache-with-salt-stack/
+https://github.com/salt-formulas/salt-formula-postgresql
+http://philipmcclarence.com/setting-up-a-postgres-test-cluster-in-vagrant/
+https://www.codementor.io/abhishake/minimal-apache-configuration-for-deploying-a-flask-app-ubuntu-18-04-phu50a7ft
+https://galaxydatatech.com/2018/03/31/passing-data-html-page/
