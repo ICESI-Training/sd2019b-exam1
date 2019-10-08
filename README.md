@@ -38,9 +38,7 @@ Deberá desplegar una plataforma que cumpla con los siguientes requerimientos:
 * Solo existe un servidor de base de datos **CentOS7 Database**. Solo es necesario realizar consultas.
 * Emplee tecnologías para frontend y backend diferentes a las empleadas en clase.
 
-![][1]
-[1]: images/01_diagrama_despliegue.png
-**Figura 1**. Diagrama de Despliegue
+![Alt text](images/01_diagrama_despliegue.png?raw=true "")
 
 ### Actividades
 1. Documento README.md en formato markdown:  
