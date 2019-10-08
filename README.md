@@ -69,14 +69,13 @@ Deberá desplegar una plataforma que cumpla con los siguientes requerimientos:
 
 ---
 
-1. Instalar Vagrant.
+**1. Instalar Vagrant.**
 
-Hay que ingresar al siguiente link:
+Ingresmos al siguiente link:
+
 https://www.vagrantup.com/docs/installation/
 
-En la esquina superior derecha seleccionamos la opción Download y después seleccionamos el instalador o paquete apropiado para nuestro sistema operativo, que en este caso es Lubuntu 19.04.
-
-<imagen>
+En la esquina superior derecha, seleccionamos la opción Download y después seleccionamos el instalador o paquete apropiado para nuestro sistema operativo (en este caso es Lubuntu 19.04).
 
 Para validar la correcta instalación utilizamos el comando:
 
@@ -90,21 +89,25 @@ Los computadores de la sala de redes tenían vagrant 2.2.3. Tocó desintalarlo e
 
 ---
 
-2. Instalar VirtualBox.
+**2. Instalar VirtualBox.**
+
+Ingresamos al siguiente link:
 
 https://vitux.com/how-to-install-virtualbox-on-ubuntu/
+
+Agregamos un repositorio fuente y actualizamos el sistema.
 
 ~~~
 sudo add-apt-repository multiverse && sudo apt-get update
 ~~~
 
-Ahora instalamos VirtualBox con el comando
+Ahora instalamos VirtualBox con el comando.
 
 ~~~
 sudo apt install virtualbox
 ~~~
 
-Para abrirlo directamente desde la terminal se escribe
+Para abrirlo directamente desde la terminal se escribe:
 
 ~~~
 virtualbox
@@ -112,9 +115,9 @@ virtualbox
 
 ---
 
-3. Instalar Saltstack
+**3. Instalar Saltstack**
 
-Como base se va a clonar el repositorio salt-vagrant-demo con el siguiente comando:
+Como base para el montaje con Saltstalk vamos a clonar el repositorio salt-vagrant-demo con el siguiente comando:
 
 ~~~
 git clone https://github.com/UtahDave/salt-vagrant-demo
@@ -122,9 +125,11 @@ git clone https://github.com/UtahDave/salt-vagrant-demo
 
 ---
 
-4. Configuración Inicial
+**4. Configuración Inicial**
 
-Ingresamos en el Vagrantfile y seleccionamos como sistema operativo para las máquinas virtuales bento/ubuntu-18.04. En un comienzo lo íbamos a hacer con centos/7, pero se nos demoraba entre 1 y 2 horas en aprovisionar. Mientras que con bento/ubuntu-18.04 se demora aproximadamente 20 minutos.
+Ingresamos en el Vagrantfile y seleccionamos como sistema operativo para las máquinas virtuales bento/ubuntu-18.04.
+
+**Nota:** En un comienzo lo íbamos a hacer con centos/7, pero se nos demoraba entre 1 y 2 horas en aprovisionar. Mientras que con bento/ubuntu-18.04 se demora aproximadamente 20 minutos.
 
 Para levantar las máquinas virtuales, se utiliza el siguiente comando:
 
@@ -153,20 +158,20 @@ Ahora hacemos ping a los minions:
 salt '*' test.ping
 ~~~
 
-![Alt text](images/ssh_master_test_ping.PNG?raw=true "")
+El resultado del comando se puede apreciar a continuación:
 
-Si aparece el nombre del minion y seguido de True, todo salió bien :).
+![Alt text](images/ssh_master_test_ping.PNG?raw=true "")
 
 ---
 
-5. Configuración inicial de los minions
+**5. Configuración inicial de los minions**
 
 En nuestra arquitectura tenemos 5 máquinas virtuales:
-* Master - master - como el nombre lo indica cumplirá el rol de master y a su vez de balanceador de carga. No hicimos el master por separado para ahorrarnos una máquina virtual. **IP:** 192.168.50.10. **RAM:** 512
-* Webserver 1 - minionws1 - minion encargado de tener el Webserver 1. **IP:** 192.168.50.110. **RAM:** 512
-* Webserver 2 - minionws2 - minion encargado de tener el Webserver 1. **IP:** 192.168.50.120. **RAM:** 512
-* Database - miniondb - minion encargo de tener la base de datos. **IP:** 192.168.50.130. **RAM:** 512
-* Load Balancer - miniondb - minion encargo de hacer las veces de balanceador de carga con los Webservers. **IP:** 192.168.50.140. **RAM:** 512
+* **Master** - *master* - como el nombre lo indica cumplirá el rol de master y a su vez de balanceador de carga. No hicimos el master por separado para ahorrarnos una máquina virtual. **IP:** 192.168.50.10. **RAM:** 512
+* **Webserver 1** - *minionws1* - minion encargado de tener el Webserver 1. **IP:** 192.168.50.110. **RAM:** 512
+* **Webserver 2** - *minionws2* - minion encargado de tener el Webserver 1. **IP:** 192.168.50.120. **RAM:** 512
+* **Database** - *miniondb* - minion encargo de tener la base de datos. **IP:** 192.168.50.130. **RAM:** 512
+* **Load Balancer** - *miniondb* - minion encargo de hacer las veces de balanceador de carga con los Webservers. **IP:** 192.168.50.140. **RAM:** 512
 
 El archivo salt-vagrant-demo que copiamos venía con master, minion1 y minion2. Cada uno de ellos adicionalmente tenía un id con el mismo nombre y unas keys (pem y pub). Todas las referencias de minion1 se reemplazaron por minionws1 y las referencias de minion2 se reemplazaron por minionws2.
 
@@ -182,17 +187,9 @@ ssh-keygen rsa
 
 Sin embargo, a la hora de hacer el intercambio de keys entre el master y los minions, se producía un error. Como alternativa, un poco chambona, se nos ocurrió copiar el contenido de las keys de minionws2 y ponerlas en miniondb.pem y miniondb.pub según correspondiera, ¡así nos funcionó!
 
-![Alt text](images/state_apply_minionws1.jpeg?raw=true "")
-
-![Alt text](images/state_apply_minionws2.jpeg?raw=true "")
-
-![Alt text](images/state_apply_minionwlb.PNG?raw=true "")
-
-![Alt text](images/state_apply_minionwdb.jpeg?raw=true "")
-
 ---
 
-6. Webserver 1 y 2
+**6. Webserver 1 y 2**
 
 Nos ubicamos en la carpeta *salt*, accedemos a al archivo *top.sls* y agregamos lo siguiente:
 
@@ -239,7 +236,10 @@ Primero creamos el archivo *ExampleFlask.conf* y le agregamos el siguiente conte
 </VirtualHost>
 ~~~
 
-Este archivo se encarga de ...
+Este archivo se encarga de:
+* Especificar la dirección ip del servidor web.
+* Realizar el acoplamiento entre Python y Apache utilizando el módulo wsgi y especificar la dirección de este archivo.
+* Especificar los permisos del acceso a la página web.
 
 Después creamos el archivo *app.wsgi* y le agregamos el siguiente contenido:
 
@@ -254,11 +254,11 @@ from app import app as application
 application.secret_key = 'ds4ever'
 ~~~
 
-Este archivo se encarga de ...
+Este es el archivo del módulo wsgi que permite el acoplamiento entre Python y Apache.
 
 Ahora nos ubicamos en *backend*.
 
-Creamos el archivo *app.py*.
+Creamos el archivo *app.py*. El archivo principal del backend realizado con Python.
 ~~~
 from flask import Flask, request, flash, render_template
 from models import db
@@ -303,7 +303,7 @@ if __name__ == "__main__":
     app.run()
 ~~~
 
-Creamos el archivo *manage.py*
+Creamos el archivo *manage.py*.
 
 ~~~
 from flask_script import Manager
@@ -318,7 +318,7 @@ if __name__ == '__main__':
     manager.run()
 ~~~
 
-Creamos el archivo *models.py*
+Creamos el archivo *models.py*.
 
 ~~~
 from flask_sqlalchemy import SQLAlchemy
@@ -337,7 +337,7 @@ class User(db.Model):
         self.name = nam
 ~~~
 
-Creamos la carpeta *templates* y dentro creamos el archivo *front.html*
+Creamos la carpeta *templates* y dentro creamos el archivo *front.html*. Aquí se pone el código necesario para que el backend se pueda evidenciar de forma visual.
 
 ~~~
 <html>
@@ -398,16 +398,11 @@ Creamos la carpeta *templates* y dentro creamos el archivo *front.html*
 </html>
 ~~~
 
-Nos ubicamos nuevamente en *web*, dentro creamos la carpeta *__pycache__*
-
-~~~
-~~~
-
 ![Alt text](images/webserver1.jpeg?raw=true "")
 
 Nos ubicamos en *web2*.
 
-Creamos el archivo *ExampleFlask.conf*
+Creamos el archivo *ExampleFlask.conf*. Esta es una copia del creado en *web* ya que entre los webservers solo cambia la dirección IP.
 
 ~~~
 <VirtualHost *:80>
@@ -427,7 +422,7 @@ Creamos el archivo *ExampleFlask.conf*
 </VirtualHost
 ~~~
 
-Creamos el archivo *front.html*
+Creamos el archivo *front.html*. Esta es una copia del creado en *web* ya que entre los webservers solo cambia la dirección IP.
 
 ~~~
 <html>
@@ -488,7 +483,7 @@ Creamos el archivo *front.html*
 </html>
 ~~~
 
-Creamos el archivo *init.sls*
+Creamos el archivo *init.sls*. Aquí instalamos los paquetes Apache2 (el servidor web), y dejamos el servicio funcionando. Después, instalamos las dependencias necesarias para el funcionamiento del backend con Python, para lo cual instalamos Python3.6 y el instalador de paquetes de Python pip para poder instalar el framework Flask. Además se instala el módulo WSGI como complemento de Python3 para la integración de Apache con Python
 
 ~~~
 # install the web server package
@@ -570,7 +565,11 @@ apache2 restart:
     - name: sudo systemctl restart apache2
 ~~~
 
+A continuación se muestra el correcto funcionamiento del webserver2.
+
 ![Alt text](images/webserver2.jpeg?raw=true "")
+
+*Nota:* Salió un error al aprovisionar ambos webserver. Al subir el webserver1 se hace unas migraciones, es decir, se crea la tabla de los usuarios donde se va a guardar toda la información, y cuando se subía el webserver2 esas migraciones ya estaban hechas y por eso fallaba. Se hizo la modificación para que al aprovisionar el webserver2 no se volviera a hacer la migración.
 
 7. Load Balancer
 
@@ -591,6 +590,30 @@ base:
     - web2
   'minionlb':
     - balancer
+~~~
+
+Nos ubicamos en la carpeta *balancer* y creamos el archivo *init.sls* con el siguiente contenido:
+
+~~~
+install haproxy:
+  pkg.installed:
+    - pkgs:
+      - haproxy
+/etc/haproxy/haproxy.cfg:
+  file.append:
+    - text: |
+        frontend app_servers
+            bind *:80
+            default_backend apps
+
+        backend apps
+            mode http
+            server web1 192.168.50.110:80 check
+            server web2 192.168.50.120:80 check
+haproxy:
+  cmd.run:
+    - name: sudo systemctl restart haproxy  
+
 ~~~
 
 8. Database
@@ -688,7 +711,29 @@ restart pg service:
     - name: sudo /etc/init.d/postgresql restart
 ~~~
 
-9. Tareas de integración
+**Nota:** No encontramos módulos de postgres para crear la base de datos, ni cambiar la contraseña. Por tal motivo, recurrimos a usar scripts.
+
+**9. Aprovisionamiento.**
+
+Aquí podemos observar que el aprovisionamiento de cada minion se realizó con éxito.
+
+*minionws1*
+
+![Alt text](images/state_apply_minionws1.jpeg?raw=true "")
+
+*minionws2*
+
+![Alt text](images/state_apply_minionws2.jpeg?raw=true "")
+
+*minionlb*
+
+![Alt text](images/state_apply_minionwlb.PNG?raw=true "")
+
+*miniondb*
+
+![Alt text](images/state_apply_minionwdb.jpeg?raw=true "")
+
+**10. Tareas de integración**
 
 |         Tarea       | Desarrollador |
 | ------------------- | ------------- |
@@ -700,7 +745,7 @@ restart pg service:
 |Load Balancer        | Cristian      |
 |Database             | Johnatan      |
 
-10. Referencias
+**11. Referencias**
 
 Entre nuestras referencias bibliográficas se encuentran:
 
