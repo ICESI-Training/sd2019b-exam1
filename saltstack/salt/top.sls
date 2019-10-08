@@ -1,4 +1,6 @@
 base:
+  '*':
+    - update
   'loadBalancer':
     - haproxy
   'webserver1':
