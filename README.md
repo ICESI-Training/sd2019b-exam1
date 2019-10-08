@@ -79,12 +79,13 @@ _imagen_
 3. Cuando el archivo ya está copiado en la máquina virtual, ejecutamos el script con el módulo de saltstack **cmd.run.** 
 _imagen_
 El script1 contiene lo siguiente:
+
 _imagen_
-Todos los comandos ejecutados son con el usuario postgres, el cual es el usuario por defecto cuando se instala postgres, y todos los comandos se ejecutan en el SQL Shell (psql). 
-La línea 3 se encarga de crear la base de datos, la cual se llama pg_ds.
-La línea 5 se encarga de conectarse a la base de datos previamente creada. 
-La línea 7 se encarga de crear la tabla persona en la base de datos previamente creada. 
-La línea 13 es para modificar la contraseña del usuario postgres, puesto que al intentar contraseñas como postgres, password, admin o vacío no coincidían al realizar la conexión desde la aplicación. 
+- Todos los comandos ejecutados son con el usuario postgres, el cual es el usuario por defecto cuando se instala postgres, y todos los comandos se ejecutan en el SQL Shell (psql). 
+- La línea 3 se encarga de crear la base de datos, la cual se llama pg_ds.
+- La línea 5 se encarga de conectarse a la base de datos previamente creada. 
+- La línea 7 se encarga de crear la tabla persona en la base de datos previamente creada. 
+- La línea 13 es para modificar la contraseña del usuario postgres, puesto que al intentar contraseñas como postgres, password, admin o vacío no coincidían al realizar la conexión desde la aplicación. 
 
 4. Luego por problemas que se presentaron en la prueba de aprovisionamiento, los cuales se especificarán en la sección 8, se deben realizar cambios en archivos de configuración de postgres. En el **postgresql.conf** se debe adicionar la línea de **listen_addresses = '*'**, puesto que por defecto la dirección ip que escucha por default es localhost. 
 Lo anterior se realiza con el módulo de saltstack llamado **file.append.** La primera línea hace referencia al archivo que se desea modificar, la segunda línea hace referencia a que se va a adicionar líneas al final del archivo, y lo siguiente hace referencia al texto/líneas que se desean agregar.
@@ -92,6 +93,7 @@ _imagen_
 
 5. Siguiendo con el punto anterior, el otro archivo de configuración de postgresql que se debe modificar es el **pg_hba.conf.** En este archivo se realiza el mismo procedimiento del anterior, solo que se cambia lo que se va a adicionar al final del archivo.
 _imagen_
+
 6. Debido a que hemos realizado dos cambios en los archivos de configuración de postgresql debemos reiniciar (restart) el servicio de postgresql. En Ubuntu se realiza con el comando **sudo systemctl restart postgresql**. Esto es posible gracias al módulo de saltstack llamado **cmd.run**, el cual permite ejecutar el comando mencionado anteriormente. 
 _imagen_
 
