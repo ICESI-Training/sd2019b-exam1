@@ -1,0 +1,22 @@
+{
+  "name": "dsmidterm",
+  "version": "1.0.0",
+  "description": "Distributed Systems App for the First Midterm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "distributedsystems"
+  ],
+  "author": "Sandra Nino",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.1.0",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "os": "^0.1.1",
+    "pg": "^7.12.1"
+  }
+}
