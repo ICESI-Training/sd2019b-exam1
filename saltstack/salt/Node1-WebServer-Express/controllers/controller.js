@@ -54,7 +54,7 @@ var controller = {
         //connection.connect();
         var userId = parseInt(req.body.id, 10);
         var username = req.body.name;
-        var insertSQLStatement = `INSERT INTO users (user_id, name) VALUES (${userId},'${username}')`;
+        var insertSQLStatement = `INSERT INTO users (\` user_id\`, name) VALUES (${userId},'${username}')`;
         connection.query(insertSQLStatement, function (error, results, fields) {
             if (error) {
                 throw error;

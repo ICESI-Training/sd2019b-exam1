@@ -1,0 +1,70 @@
+<html>
+
+
+
+
+
+
+<head>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+    <h1>Gestion de usuarios Webserver2</h1>
+
+
+    <p>Inserte id</p>
+    <input type="text" id="4"> </input>
+    <br>
+    <p>Inserte nombre</p>
+    <input type="text" id="3"> </input>
+    <br>
+    <button id="1">Insertar</button>
+    <br>
+    <button id="2">Consultar</button>
+
+    <script>
+
+        $("#1").click(function () {
+            var userId = parseInt(document.getElementById('4').value, 10);
+            console.log(userId);
+            var username = document.getElementById('3').value;
+            console.log(username);
+
+            $.post("http://localhost:7894/api/sd2019bExam1/users/user",
+                {
+                    id: userId,
+                    name: username
+                },
+                function (data, status) {
+                    alert("Data: " + data + ",\nStatus: " + status);
+                    console.log(data, status);
+                });
+
+        });
+
+        $("#2").click(function () {
+            $.get("http://localhost:7894/api/sd2019bExam1/users", function (data, status) {
+                alert("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+            });
+        });
+    </script>
+
+
+
+</body>
+
+
+
+
+
+
+
+
+</html>
