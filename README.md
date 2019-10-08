@@ -2,7 +2,7 @@
 
 ## Integrantes
 - Sandra Mishale Niño Arbeláez- A00022220
-- Johan Camilo Diaz - 
+- Johan Camilo Diaz - A00329772
 - Sebastian Calero - A00065884
 
 Este repositorio contiene la implementación de una infraestructura que corresponde a:

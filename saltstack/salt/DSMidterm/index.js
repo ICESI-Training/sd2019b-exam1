@@ -3,7 +3,7 @@ const Pool = require('pg').Pool
 const app = express();
 const bodyParser = require('body-parser');
 require('dotenv').config();
-
+const os = require('os');
 app.set("view engine", "ejs")
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -17,7 +17,19 @@ const pool = new Pool({
 
 app.get('/', (req, res, next) => {
     //res.sendFile( __dirname + '/index.html');
-    res.render("index", {usersVar: []})
+    hostname = os.networkInterfaces().eth1[0].address;
+    //console.log(hostname);
+    data = {
+        usersVar: [],
+        host : hostname
+    }
+   /* if(hostname.equals("web-1")){
+        res.render("index", {usersVar: []})
+    }else{
+        res.render("index2", {usersVar: []})
+    }*/
+    res.render("index", {myData: data})
+    
   });
 
 
@@ -61,7 +73,13 @@ app.get('/users/:personid',(req,res)=> {
         }
         console.log(resp)
         if(resp.rows.length!=0){
-            res.render("index", {usersVar: resp.rows})
+            hostname = os.networkInterfaces().eth1[0].address;
+            data = {
+                usersVar: resp.rows,
+                host : hostname
+            }
+            res.render("index", {myData : data})
+            /*res.render("index", {usersVar: resp.rows})*/
         }else{
             res.send("There is not any person with that given id")
         }

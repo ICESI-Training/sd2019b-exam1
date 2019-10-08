@@ -12,7 +12,7 @@
 <body>
 
     <div class="container mt-5">
-        <h1 class="text-center"> Distributed Systems Midterm </h1>
+        <h1 class="text-center"> Distributed Systems Midterm <%= myData.host %> </h1>
 
 
         <br>
@@ -58,7 +58,7 @@
                 </tr>
             </thead>
             <tbody>
-                <% usersVar.forEach( user => { %>
+                <% myData.usersVar.forEach( user => { %>
                 <tr>
                     <th scope="row"> <%= user.idnumber %></th>
                     <td><%= user.person_name %></td>
