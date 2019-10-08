@@ -571,7 +571,9 @@ A continuación se muestra el correcto funcionamiento del webserver2.
 
 *Nota:* Salió un error al aprovisionar ambos webserver. Al subir el webserver1 se hace unas migraciones, es decir, se crea la tabla de los usuarios donde se va a guardar toda la información, y cuando se subía el webserver2 esas migraciones ya estaban hechas y por eso fallaba. Se hizo la modificación para que al aprovisionar el webserver2 no se volviera a hacer la migración.
 
-7. Load Balancer
+**7. Load Balancer**
+
+En el montaje del balanceador de carga se implementó el software de código abierto *haproxy*.
 
 Nos ubicamos en la carpeta *salt*, accedemos a al archivo *top.sls* y agregamos lo siguiente:
 
@@ -616,11 +618,21 @@ haproxy:
 
 ~~~
 
+Este archivo se encarga de instalar el paquete haproxy. Este cuando es instalado crea sus archivos de configuración en la ruta /etc/haproxy/, dentro de esta carpeta se encuentra el archivo de configuración para el balanceador con nombre haproxy.cfg.
+
+En haproxy.cfg es donde se agrega la configuración para el funcionamiento. Aquí se le indica que las peticiones las va a escuchar por el puerto 80. En el módulo backend, se configura el protocolo de las peticiones que va a recibir, en este caso, http. Se especifica las direcciones IP y el puerto de los dos servidores web atenderán las solicitudes web. Finalmente, una vez modificado este archivo para que los cambios tomen efecto se restaura el servicio con el comando “systemctl restart haproxy”.
+
+A continuación podemos apreciar que el balanceador hace referencia al webserver1.
+
 ![Alt text](images/lb_server1.png?raw=true "")
+
+Y en el momento de refrescar la página, el balanceador hace referencia al webserver2.
 
 ![Alt text](images/lb_server2.png?raw=true "")
 
-8. Database
+**Nota:** El balanceador de carga funciona y envía las peticiones a los dos servidores web, estos toman como recurso la página que se encuentra localizada en la ruta /www/var/html/index.html, lo cual evidencia el funcionamiento del balanceador de carga. Pero, para nuestra integración con el backend, se utilizó el lenguaje de programación Python que utiliza el framework Flask que es un marco ligero de aplicación web WSGI. Está diseñado para que comenzar sea rápido y fácil, con la capacidad de escalar a aplicaciones complejas. En el momento de realizar el balanceo de carga esta toma la página de la ruta anteriormente mencionada y no toma el archivo front.html que renderiza Python. No pudimos encontrar la solución hasta el momento.  Por lo cual, en el momento de realizar la petición http a los servidores web en el navegador se obtiene la página de nuestro código en Python, pero el balanceador de carga obtiene el archivo index.html anteriormente mencionado.
+
+**8. Database**
 
 Nos ubicamos en la carpeta *salt*, accedemos a al archivo *top.sls* y agregamos lo siguiente:
 
@@ -731,11 +743,11 @@ Aquí podemos observar que el aprovisionamiento de cada minion se realizó con �
 
 *minionlb*
 
-![Alt text](images/state_apply_minionwlb.PNG?raw=true "")
+![Alt text](images/state_apply_minionlb.PNG?raw=true "")
 
 *miniondb*
 
-![Alt text](images/state_apply_minionwdb.jpeg?raw=true "")
+![Alt text](images/state_apply_miniondb.jpeg?raw=true "")
 
 **10. Tareas de integración**
 
