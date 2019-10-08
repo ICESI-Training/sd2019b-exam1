@@ -4,7 +4,7 @@ Este repositorio contiene la implementacion de una infraestructura que correspon
 - Dos servidores web
 - Una base de datos
 
-Par mayor claridad se muestra a continuación las tecnologías e instrucciones utilizados para lograr esta implementacion.
+Para mayor claridad se muestran a continuación las tecnologías e instrucciones utilizados para lograr esta implementacion.
 
 ## 1. Vagrant
 Esta aplicación nos permite desplegar arquitecturas completas, a través del uso de un lenguaje declarativo, mediante el cual especificamos requerimientos de hardware y software que queremos en nuestro sistema.
@@ -12,6 +12,6 @@ Esta aplicación nos permite desplegar arquitecturas completas, a través del us
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzc2MjU1NDQ1LC0yMTQ2OTcwMjQsNjU3ND
-c1MzYyXX0=
+eyJoaXN0b3J5IjpbMTU5NDg5NTY4NCwtMjE0Njk3MDI0LDY1Nz
+Q3NTM2Ml19
 -->
