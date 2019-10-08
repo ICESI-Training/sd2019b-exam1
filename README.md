@@ -153,6 +153,8 @@ Ahora hacemos ping a los minions:
 salt '*' test.ping
 ~~~
 
+![Alt text](images/ssh_master_test_ping.PNG?raw=true "")
+
 Si aparece el nombre del minion y seguido de True, todo salió bien :).
 
 ---
@@ -180,13 +182,13 @@ ssh-keygen rsa
 
 Sin embargo, a la hora de hacer el intercambio de keys entre el master y los minions, se producía un error. Como alternativa, un poco chambona, se nos ocurrió copiar el contenido de las keys de minionws2 y ponerlas en miniondb.pem y miniondb.pub según correspondiera, ¡así nos funcionó!
 
-![Alt text](images/state_apply_minionws1.png?raw=true "")
+![Alt text](images/state_apply_minionws1.jpeg?raw=true "")
 
-![Alt text](images/state_apply_minionws2.png?raw=true "")
+![Alt text](images/state_apply_minionws2.jpeg?raw=true "")
 
-![Alt text](images/state_apply_minionwlb.png?raw=true "")
+![Alt text](images/state_apply_minionwlb.PNG?raw=true "")
 
-![Alt text](images/state_apply_minionwdb.png?raw=true "")
+![Alt text](images/state_apply_minionwdb.jpeg?raw=true "")
 
 ---
 
@@ -401,7 +403,7 @@ Nos ubicamos nuevamente en *web*, dentro creamos la carpeta *__pycache__*
 ~~~
 ~~~
 
-![Alt text](images/webserver1.png?raw=true "")
+![Alt text](images/webserver1.jpeg?raw=true "")
 
 Nos ubicamos en *web2*.
 
@@ -568,7 +570,7 @@ apache2 restart:
     - name: sudo systemctl restart apache2
 ~~~
 
-![Alt text](images/webserver2.png?raw=true "")
+![Alt text](images/webserver2.jpeg?raw=true "")
 
 7. Load Balancer
 
