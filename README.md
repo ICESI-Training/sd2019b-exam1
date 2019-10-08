@@ -50,6 +50,9 @@ Para ver que todo se generó correctamente y que el master puede alcanzar a los 
 ~~~
   salt '*' test.ping
 ~~~
+
+![Alt text](images/test_ping.png?raw=true "Vagrant Up")
+
 Al entrar en la master deben ejecutar los siguientes comandos para instalar todas las dependencias relacionadas con el Load Balancer e instalar apache en los servidores web:
 ~~~
   sudo su
@@ -188,9 +191,11 @@ Por lo tanto, la tarea de integración en este caso fue la configuración y cone
 
 Al ejecutar todos los comandos y acceder a la dirección ip del balanceador obtenemos la siguiente página:
 
-![Alt text](images/FinalPage.png?raw=true "Vagrant Up")
+![Alt text](images/finalpage1.png?raw=true "Vagrant Up")
 
-En esta página se puede llenar el formulario para agregar un nuevo dato, mientras en la parte de abajo podemos listar todos los datos que pertenecen a esta tabla.
+En esta página se puede llenar el formulario para agregar un nuevo dato, mientras en la parte de abajo podemos listar todos los datos que pertenecen a esta tabla. Al refrescar la página, el balanceador de carga dirige la petición al otro servidor web como se pude ver a continuación:
+
+![Alt text](images/finalpage2.png?raw=true "Vagrant Up")
 
 
 ## Problemas encontrados
