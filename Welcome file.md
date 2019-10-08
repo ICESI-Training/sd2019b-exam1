@@ -1,5 +1,5 @@
 # Parcial 2019
-Este documento presenta el desarrollo de una arquitectura distribuida, cuyo objetivo principal es el de interactuar con las funcionalidades de
+Este documento presenta el desarrollo de una arquitectura distribuida, cuyo objetivo principal es el de interactuar con las funcionalidades de un balanceador de carga a nivel de aplicaciones.
 
 # Files
 
@@ -140,5 +140,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTEwODE1Nzc0N119
+eyJoaXN0b3J5IjpbNDYxNzY0NjcyXX0=
 -->
