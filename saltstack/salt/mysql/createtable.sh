@@ -1,5 +1,3 @@
-#!/bin/bash
-
 mysql -u root <<MYSQL
         DROP DATABASE IF EXISTS test;
         CREATE DATABASE IF NOT EXISTS test;
