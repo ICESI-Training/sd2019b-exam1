@@ -9,7 +9,8 @@ En este repositorio contiene la implementacion de una infraestructura que corres
 
 Par mayor claridad se muestra a continuación las tecnologías e instrucciones utilizados para lograr esta implementacion.
 
-## 1. 
+## 1. Vagrant
+Esta aplicación nos permite desplegar arquitecturas de
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMzc1OTE3NzAsNjU3NDc1MzYyXX0=
+eyJoaXN0b3J5IjpbMzU3NTM0NTU2LDY1NzQ3NTM2Ml19
 -->
