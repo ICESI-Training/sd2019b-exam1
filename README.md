@@ -10,7 +10,9 @@ En este repositorio contiene la implementacion de una infraestructura que corres
 Par mayor claridad se muestra a continuación las tecnologías e instrucciones utilizados para lograr esta implementacion.
 
 ## 1. Vagrant
-Esta aplicación nos permite desplegar arquitecturas completas, a través del uso de un lenguaje declarativo, mediante el cual especificamos requerimientos de hardware que 
+Esta aplicación nos permite desplegar arquitecturas completas, a través del uso de un lenguaje declarativo, mediante el cual especificamos requerimientos de hardware y software que queremos en nuestro sistema.
+
+
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTUzNDIwMzQ4LDY1NzQ3NTM2Ml19
+eyJoaXN0b3J5IjpbLTIxNDY5NzAyNCw2NTc0NzUzNjJdfQ==
 -->
