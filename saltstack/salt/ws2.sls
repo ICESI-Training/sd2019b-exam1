@@ -1,9 +1,7 @@
-nodejs:
-  pkg:
-    - installed    
-npm:
-  pkg:
-    - installed
+install_node:
+  cmd.script:
+    - name: installNode.sh
+    - source: salt://installNode.sh
 
 nginx_s:
   pkg.installed:
@@ -14,9 +12,13 @@ check_nginx_start:
     - name : nginx
     - enable: True
 
-copy_my_files:
+/usr/share/nginx/html/index.html:
   file.managed:
-    - name: /usr/share/nginx/html/index.html
     - source: salt://index2.html
     - makedirs: True
     - force: True
+
+/home/vagrant/NodeServer:
+  file.recurse:
+    - source: salt://Node1-WebServer-Express
+    - include_empty: True
