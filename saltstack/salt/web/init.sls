@@ -81,7 +81,8 @@ db upgrade:
     - template: jinja
     - source: salt://web/conf/app.wsgi
 
-/etc/apache2/sites-available/ExampleFlask.conf:
+
+/etc/apache2/sites-available/000-default.conf:
   file.managed:
     - template: jinja
     - source: salt://web/conf/ExampleFlask.conf

@@ -2,6 +2,8 @@ install haproxy:
   pkg.installed:
     - pkgs:
       - haproxy
+      
+      
 /etc/haproxy/haproxy.cfg:
   file.append:
     - text: |
