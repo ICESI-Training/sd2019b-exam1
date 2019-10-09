@@ -624,13 +624,13 @@ En haproxy.cfg es donde se agrega la configuración para el funcionamiento. Aqu�
 
 A continuación podemos apreciar que el balanceador hace referencia al webserver1.
 
-![Alt text](images/lb_server1.png?raw=true "")
+![Alt text](images/loadbalancer2.png?raw=true "")
 
 Y en el momento de refrescar la página, el balanceador hace referencia al webserver2.
 
-![Alt text](images/lb_server2.png?raw=true "")
+![Alt text](images/loadbalancer1.png?raw=true "")
 
-**Nota:** El balanceador de carga funciona y envía las peticiones a los dos servidores web, estos toman como recurso la página que se encuentra localizada en la ruta /www/var/html/index.html, lo cual evidencia el funcionamiento del balanceador de carga. Pero, para nuestra integración con el backend, se utilizó el lenguaje de programación Python que utiliza el framework Flask que es un marco ligero de aplicación web WSGI. Está diseñado para que comenzar sea rápido y fácil, con la capacidad de escalar a aplicaciones complejas. En el momento de realizar el balanceo de carga esta toma la página de la ruta anteriormente mencionada y no toma el archivo front.html que renderiza Python. No pudimos encontrar la solución hasta el momento.  Por lo cual, en el momento de realizar la petición http a los servidores web en el navegador se obtiene la página de nuestro código en Python, pero el balanceador de carga obtiene el archivo index.html anteriormente mencionado.
+**Nota:** El balanceador de carga funciona ahora correctamente. Anteriormente había un problema porque existía un archivo llamado 000-default.conf que apuntaba también al puerto 80, y haproxy usaba este archivo en vez de ExampleFlask.conf, se solucionó sobreescribiendo el archivo por defecto con los datos que requeríamos para la aplicación desarrollada.
 
 **8. Database**
 
